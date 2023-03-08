@@ -13,6 +13,7 @@ function getPost($idPost) {
 function getAllPost() {
     $pdo = getPDOConnection();
     $st = $pdo->query("Select * from Post");   
+    st->execute();
     return $st;
 }
 
@@ -24,7 +25,11 @@ function getPostFromUser($idUser) {
 
 function creerNouveauPost($idUtilisateur, $contenuMessage) {
     $pdo = getPDOConnection();
-    
-    // TODO
+    $st = $pdo->prepare("INSERT INTO r_Post (Id_Post, Contenu, date_publication, Id_Utilisateur) VALUES (NULL, :content,current_timestamp(), :idUser)");
+    $st->bindParam("idUser", $idUser);
+    $idUser = $idUtilisateur;
+    $st->bindParam("content", $conent);
+    $conent = $contenuMessage;
+    $st->execute();
 }
 ?>
