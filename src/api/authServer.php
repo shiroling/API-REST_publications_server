@@ -3,6 +3,7 @@
     header("Content-Type:application/json");
     require('../../dependencies/jwt_utils.php');
     require('../dataModel/Utilisateur.php');
+    require('../../dependencies/rest_utils.php');
 
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch($http_method) {
@@ -19,6 +20,7 @@
             }
             break;
         default:
+            deliver_response(405, "Methode non supportee", NULL);
             break;
     }
 
