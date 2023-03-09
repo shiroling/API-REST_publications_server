@@ -1,19 +1,25 @@
 <?php
-require("conx.php");
+    require("conx.php");
+    require('../../dependencies/rest_utils.php');
 
 function isValidUser($username, $password)
 {
-    $pdo = getPDOConnection();
-    $st = $pdo->prepare("SELECT u.Id_Utilisateur FROM Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
-    $st->bindParam("nom", $nom);
-    $st->bindParam("mdp", $mdp);
-    $nom = $username;
-    $mdp = $password;
-    $st->execute();
-    if ($stmt->rowCount() > 2) {
-        throw new Exception("Deverair pas y avoir plus d'un user ici", 1);
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.Id_Utilisateur FROM r_Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
+        $st->bindParam("nom", $nom);
+        $st->bindParam("mdp", $mdp);
+        $nom = $username;
+        $mdp = $password;
+        $st->execute();
+        if ($st->rowCount() > 2) {
+            throw new Exception("Deverait pas y avoir plus d'un user ici", 1);
+        }
+        return $st->rowCount() > 0;
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de données", $e);
     }
-    return $stmt->rowCount() > 0;
+    
 }
 
 function getUserInfo($username, $password)
