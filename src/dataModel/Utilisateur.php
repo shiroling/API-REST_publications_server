@@ -10,10 +10,10 @@ function isValidUser($username, $password)
     $nom = $username;
     $mdp = $password;
     $st->execute();
-    if ($stmt->rowCount() > 2) {
+    if ($st->rowCount() > 2) {
         throw new Exception("Deverair pas y avoir plus d'un user ici", 1);
     }
-    return $stmt->rowCount() > 0;
+    return $st->rowCount() > 0;
 }
 
 function getUserInfo($username, $password)
