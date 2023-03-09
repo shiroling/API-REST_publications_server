@@ -38,13 +38,13 @@ function getDislikedPost($idUtilisateur) {
 
 }
 
-function getLikedPost($idUser) {
+function getLikedPost($idUtilisateur) {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
     $st->bindParam("idUser", $idUser);
     $idUser = $idUtilisateur;
     $st->execute();
-    return st->fetchAll();
+    return $st->fetchAll();
 }
 
 function getPostFromUser($idUser) {
