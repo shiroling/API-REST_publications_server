@@ -1,7 +1,7 @@
 <?php
 
-    require('../../dependencies/jwt_utils.php');
-    require('../../dependencies/rest_utils.php');
+    require_once('../../dependencies/jwt_utils.php');
+    require_once('../../dependencies/rest_utils.php');
 
     header("Content-Type:application/json");
 

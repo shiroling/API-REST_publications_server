@@ -1,6 +1,6 @@
 <?php
     require("conx.php");
-    require('../../dependencies/rest_utils.php');
+    require_once('../../dependencies/rest_utils.php');
 
 function isValidUser($username, $password)
 {
@@ -17,21 +17,24 @@ function isValidUser($username, $password)
         }
         return $st->rowCount() > 0;
     } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de données", $e);
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
-    
 }
 
 function getUserInfo($username, $password)
 {
-    $pdo = getPDOConnection();
-    $st = $pdo->prepare("SELECT u.Id_Utilisateur as id, u.Role as role FROM Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
-    $st->bindParam("nom", $nom);
-    $st->bindParam("mdp", $mdp);
-    $nom = $username;
-    $mdp = $password;
-    $st->execute();
-    return $st->fetchAll();
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.Id_Utilisateur as id, u.Role as role FROM r_Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
+        $st->bindParam("nom", $nom);
+        $st->bindParam("mdp", $mdp);
+        $nom = $username;
+        $mdp = $password;
+        $st->execute();
+        return $st->fetchAll();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 function getDislikedPost($idUtilisateur) {
