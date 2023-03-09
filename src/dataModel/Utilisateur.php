@@ -17,7 +17,7 @@ function isValidUser($username, $password)
         }
         return $st->rowCount() > 0;
     } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de données", null);
+        deliver_response(503, "Erreur avec le serveur de base de données", $e);
     }
     
 }
