@@ -1,7 +1,7 @@
 <?php
 require("conx.php");
 
-public function isValidUser($username, $password)
+function isValidUser($username, $password)
 {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT u.Id_Utilisateur FROM Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
@@ -16,7 +16,7 @@ public function isValidUser($username, $password)
     return $stmt->rowCount() > 0;
 }
 
-public function getUserInfo($username, $password)
+function getUserInfo($username, $password)
 {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT u.Id_Utilisateur as id, u.Role as role FROM Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
@@ -28,30 +28,30 @@ public function getUserInfo($username, $password)
     return $st->fetchAll();
 }
 
-public function getDislikedPost($idUtilisateur) {
+function getDislikedPost($idUtilisateur) {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT p from r_Post p, r_Liker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
     $st->bindParam("idUser", $idUser);
     $idUser = $idUtilisateur;
     $st->execute();
-    return json_encode($st->fetchAll());
+    return $st->fetchAll();
 
 }
 
-public function getLikedPost($idUser) {
+function getLikedPost($idUser) {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
     $st->bindParam("idUser", $idUser);
     $idUser = $idUtilisateur;
     $st->execute();
-    return json_encode($st->fetchAll());
+    return st->fetchAll();
 }
 
 function getPostFromUser($idUser) {
     $pdo = getPDOConnection();
     $st = $pdo->query("Select * from Post p Where p.id_Utilisateur");   
     $st->execute();
-    return json_encode($st->fetchAll());
+    return $st->fetchAll();
 }
 
 function getUtilisateur($idUtilisateur) {
