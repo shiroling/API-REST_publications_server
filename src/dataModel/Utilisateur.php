@@ -63,29 +63,6 @@ function getLikedPost($idUtilisateur) {
     }
 }
 
-function getAllPosts() {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->query("Select * from r_Post p");   
-        $st->execute();
-        return $st->fetchAll();
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
-function getPostFromUser($idUser) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->query("Select * from r_Post p Where p.id_Utilisateur = :idUser");
-        $st->bindParam("idUser", $idUser);
-        $st->execute();
-        return $st->fetchAll();
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
 function getUtilisateur($idUtilisateur) {
     try {
         $pdo = getPDOConnection();
