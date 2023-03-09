@@ -51,4 +51,32 @@ function creerNouveauPost($idUtilisateur, $contenuMessage) {
     }
 }
 
+function likerPost($idUtilisateur, $idDuPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("INSERT INTO r_Liker (Id_Utilisateur, Id_Post) VALUES (:idUser, :idPost) ");
+        $st->bindParam("idUser", $idUser);
+        $idUser = $idUtilisateur;
+        $st->bindParam("idPost", $idPost);
+        $idPost = $idDuPost;
+        $st->execute();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+function dislikerPost($idUtilisateur, $idDuPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("INSERT INTO r_Disliker (Id_Utilisateur, Id_Post) VALUES (:idUser, :idPost) ");
+        $st->bindParam("idUser", $idUser);
+        $idUser = $idUtilisateur;
+        $st->bindParam("idPost", $idPost);
+        $idPost = $idDuPost;
+        $st->execute();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+
 ?>
