@@ -10,10 +10,10 @@ function isValidUser($username, $password)
     $nom = $username;
     $mdp = $password;
     $st->execute();
-    if ($st->rowCount() > 2) {
+    if ($stmt->rowCount() > 2) {
         throw new Exception("Deverair pas y avoir plus d'un user ici", 1);
     }
-    return $st->rowCount() > 0;
+    return $stmt->rowCount() > 0;
 }
 
 function getUserInfo($username, $password)
@@ -38,13 +38,13 @@ function getDislikedPost($idUtilisateur) {
 
 }
 
-function getLikedPost($idUtilisateur) {
+function getLikedPost($idUser) {
     $pdo = getPDOConnection();
     $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
     $st->bindParam("idUser", $idUser);
     $idUser = $idUtilisateur;
     $st->execute();
-    return $st->fetchAll();
+    return st->fetchAll();
 }
 
 function getPostFromUser($idUser) {
