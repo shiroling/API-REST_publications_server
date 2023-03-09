@@ -38,38 +38,65 @@ function getUserInfo($username, $password)
 }
 
 function getDislikedPost($idUtilisateur) {
-    $pdo = getPDOConnection();
-    $st = $pdo->prepare("SELECT p from r_Post p, r_Liker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
-    $st->bindParam("idUser", $idUser);
-    $idUser = $idUtilisateur;
-    $st->execute();
-    return $st->fetchAll();
-
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT p from r_Post p, r_Liker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
+        $st->bindParam("idUser", $idUser);
+        $idUser = $idUtilisateur;
+        $st->execute();
+        return $st->fetchAll();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 function getLikedPost($idUtilisateur) {
-    $pdo = getPDOConnection();
-    $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
-    $st->bindParam("idUser", $idUser);
-    $idUser = $idUtilisateur;
-    $st->execute();
-    return $st->fetchAll();
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
+        $st->bindParam("idUser", $idUser);
+        $idUser = $idUtilisateur;
+        $st->execute();
+        return $st->fetchAll();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getAllPosts() {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->query("Select * from r_Post p");   
+        $st->execute();
+        return $st->fetchAll();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 function getPostFromUser($idUser) {
-    $pdo = getPDOConnection();
-    $st = $pdo->query("Select * from Post p Where p.id_Utilisateur");   
-    $st->execute();
-    return $st->fetchAll();
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->query("Select * from r_Post p Where p.id_Utilisateur = :idUser");
+        $st->bindParam("idUser", $idUser);
+        $st->execute();
+        return $st->fetchAll();
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 function getUtilisateur($idUtilisateur) {
-    $pdo = getPDOConnection();
-    $st = $pdo->prepare("Select * from Utilisateur where id_Utilisateur = ?");
-    $st->bindParam(1, $id);
-    $id = $idUtilisateur;
-    $st->execute();
-    return $st;
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("Select * from r_Utilisateur where id_Utilisateur = ?");
+        $st->bindParam(1, $id);
+        $id = $idUtilisateur;
+        $st->execute();
+        return $st;
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 ?>
