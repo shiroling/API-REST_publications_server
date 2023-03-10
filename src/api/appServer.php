@@ -75,11 +75,20 @@
     function procedureClientPublisher($http_method, $idUtilisateur) {
         switch($http_method){
             case 'GET':
-                $posts = getPostFromUser($idUtilisateur);
-                deliver_response(200, "Affichage des posts de l'utilisateur", $posts);
+                if (!isset($_GET)){
+                    $posts = getAllPostPublisher();
+                    deliver_response(200, "Affichage des posts (en mode publisher)", $posts);
+                } else {
+                    if (isset($_GET['idUser'])) {
+                        $posts = getPostFromUser($idUtilisateur);
+                        deliver_response(200, "Affichage des posts de l'utilisateur", $posts);
+                    }
+                }
                 break;
             case 'POST':
-                
+                $postedData = file_get_contents('php://input');
+                creerNouveauPost($idUtilisateur, json_decode($postedData, true)['contenu']);
+                deliver_response(201, "Post cree", null);
                 break;
             case 'PUT':
                 

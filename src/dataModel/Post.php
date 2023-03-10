@@ -29,7 +29,11 @@ function getAllPosts() {
 function getAllPostsModerator() {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->query("Select * from r_Post p");   
+        $st = $pdo->query('SELECT r_Post.Id_Post, r_Utilisateur.Nom nom, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
+                            FROM r_Post NATURAL JOIN r_Utilisateur
+                            LEFT JOIN r_Liker ON r_Post.Id_Post = r_Liker.Id_Post
+                            LEFT JOIN r_Disliker ON r_Post.Id_Post = r_Disliker.Id_Post
+                            GROUP BY r_Post.Id_Post, r_Post.Contenu;');   
         $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
