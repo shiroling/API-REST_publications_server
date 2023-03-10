@@ -15,7 +15,7 @@ function generate_jwt($headers, $payload, $secret = 'secret') {
 
 function getPayload($jwt) {
 	$tokenParts = explode('.', $jwt);
-	return json_decode(base64_decode($tokenParts[1]));
+	return json_decode(base64_decode($tokenParts[1]), true);
 }
 
 function is_jwt_valid($jwt, $secret = 'secret') {
