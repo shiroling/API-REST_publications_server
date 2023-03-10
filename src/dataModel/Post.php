@@ -17,12 +17,9 @@ function getPost($idPost) {
 function getAllPosts() {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->query("Select u.Nom nom, p.date_publication date, p.contenu contenu from r_Post p, r_Utilisateur u Where u.Id_Utilisateur = p.Id_Utilisateur");   
-        $st->execute();
-        $data = $st->fetchAll();
-        foreach ($data[0] as $post) {
-            unset($post['0']);
-        }
+        $req = $pdo->prepare("Select u.Nom nom, p.date_publication date, p.contenu contenu from r_Post p, r_Utilisateur u Where u.Id_Utilisateur = p.Id_Utilisateur");   
+        $req->execute();
+        $data = $req->fetchAll(PDO::FETCH_ASSOC);
         return $data;
 
 
