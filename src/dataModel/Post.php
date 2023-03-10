@@ -8,7 +8,7 @@ function getPost($idPost) {
         $st->bindParam(1, $id);
         $id = $idPost;
         $st->execute();
-        return $st;
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
@@ -33,7 +33,7 @@ function getAllPostsModerator() {
         $pdo = getPDOConnection();
         $st = $pdo->query("Select * from r_Post p");   
         $st->execute();
-        return $st->fetchAll();
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
@@ -47,7 +47,7 @@ function getPostFromUser($idUser) {
         $st = $pdo->query("Select * from r_Post p Where p.id_Utilisateur = :idUser");
         $st->bindParam("idUser", $idUser);
         $st->execute();
-        return $st->fetchAll();
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
