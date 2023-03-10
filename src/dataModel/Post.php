@@ -44,13 +44,13 @@ function getAllPostsModerator() {
  function getAllPostInfo($idPost) {
     throw new Exception("Unimplementd method", 1);
  }
-function getPostFromUser($idUser) {
+function getPostFromUser($idUtilisateur) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->query("Select * from r_Post p Where p.id_Utilisateur = :idUser");
-        $st->bindParam("idUser", $idUser);
+        $st = $pdo->prepare("Select * from r_Post p Where p.id_Utilisateur = :idUser");
+        $st->bindParam("idUser", $idUtilisateur);
         $st->execute();
-        return $st->fetchAll();
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }

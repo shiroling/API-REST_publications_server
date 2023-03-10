@@ -72,10 +72,11 @@
         }
     }
 
-    function procedureClientPublisher($http_method, $bearer_token) {
+    function procedureClientPublisher($http_method, $idUtilisateur) {
         switch($http_method){
             case 'GET':
-                
+                $posts = getPostFromUser($idUtilisateur);
+                deliver_response(200, "Affichage des posts de l'utilisateur", $posts);
                 break;
             case 'POST':
                 
