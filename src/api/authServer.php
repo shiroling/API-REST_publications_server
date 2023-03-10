@@ -9,11 +9,13 @@
     switch($http_method) {
         case 'POST':
             $data = (array) json_decode(file_get_contents('php://input'), true);
-            if (empty($data)){
+            if (empty($data) || empty($data['username']) || empty($data['password'])){
                 deliver_response(400, "Arguments manquants : nom d'utilisateur, mot de passe", null);
                 break;
             }
-            if (isValidUser($data['username'], $data['password'])) {
+            deliver_response(2123, "uname & pass hashé", $data['username']." -- ".hash("sha256",$data['password']));
+
+            if (isValidUser($data['username'], hash("sha256",$data['password']))) {
                 $user = getUserInfo($data['username'], $data['password']);
                 $headers = array('alg'=>'HS256', 'typ'=>'JWT');
                 $payload = array('id'=>$user[0]['id'], 'role'=>$user[0]['role'], 'exp'=>(time() + 31536000));
