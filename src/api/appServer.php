@@ -13,8 +13,22 @@
     if ($bearer_token == null) {
         procedureClientAnonyme($http_method);
     } else {
-        procedureClientModerator($http_method, $bearer_token);
-        procedureClientPublisher($http_method, $bearer_token);
+        if (!is_jwt_valid($bearer_token)) {
+            deliver_response(503, "Jeton invalide", NULL);
+        } else {
+            $payload = getPayload($bearer_token);
+            switch ($payload['role']) {
+            case 'publisher':
+                procedureClientPublisher($http_method, $payload['id']);
+                break;
+            case 'moderator':
+                procedureClientModerator($http_method, $payload['id']);
+                break;
+            default:
+                deliver_response(401, "Unauthorized : Role d'utilisateur invalide", NULL);
+                break;
+            }
+        }
     }
 
     function procedureClientAnonyme($http_method) {
@@ -29,21 +43,28 @@
         }
     }
 
-    function procedureClientModerator($http_method, $bearer_token) {
+    function procedureClientModerator($http_method, $idUtilisateur) {
         switch($http_method){
             case 'GET':
-                if (is_jwt_valid($bearer_token)) {
-                    
+                if (!isset($_GET)) {
+                    $result = getAllPostsModerator();
                 } else {
-                    deliver_response(503, "Jeton invalide", NULL);
+                    if (isset($_GET['idPost'])) {
+                        deliver_response(500, " Unimplemented method", NULL);
+                        //$result = getAllPostInfo($_GET['idPost']);
+                    } else
+                    if (isset($_GET['idUser'])) {
+                        deliver_response(500, " Unimplemented method", NULL);
+                        //$result = getAllUserInfo();
+                    } else {
+                        deliver_response(422, " Unprocessable Content: mauvais argument", NULL);
+                        exit();
+                    }
                 }
+                deliver_response(200, "Affichage des posts (en mode moderateur)", $result);
                 break;
             case 'DELETE':
-                if (is_jwt_valid($bearer_token)) {
-    
-                } else {
-                    deliver_response(503, "Jeton invalide", NULL);
-                }
+                
                 break;
             default:
                 deliver_response(405, "Methode non supportee en moderator", NULL);
@@ -54,32 +75,16 @@
     function procedureClientPublisher($http_method, $bearer_token) {
         switch($http_method){
             case 'GET':
-                if (is_jwt_valid($bearer_token)) {
-                    
-                } else {
-                    deliver_response(503, "Jeton invalide", NULL);
-                }
+                
                 break;
             case 'POST':
-                if (is_jwt_valid($bearer_token)) {
-                    
-                } else {
-                    deliver_response(503, "Jeton invalide", NULL);
-                }
+                
                 break;
             case 'PUT':
-                if (is_jwt_valid($bearer_token)) {
-    
-                } else {
-                    deliver_response(503, "Jeton invalide", NULL);
-                }
+                
                 break;
             case 'DELETE':
-                if (is_jwt_valid($bearer_token)) {
-    
-                } else {
-                    deliver_response(503, "Jeton invalide", NULL);
-                }
+                
                 break;
             default:
                 deliver_response(405, "Methode non supportee", NULL);

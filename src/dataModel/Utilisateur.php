@@ -76,4 +76,8 @@ function getUtilisateur($idUtilisateur) {
     }
 }
 
+function getAllUserInfo($idUtilisateur) {
+    throw new Exception("Unimplementd method", 1);
+}
+
 ?>

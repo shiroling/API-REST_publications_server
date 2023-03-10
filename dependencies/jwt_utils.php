@@ -13,6 +13,11 @@ function generate_jwt($headers, $payload, $secret = 'secret') {
 	return $jwt;
 }
 
+function getPayload($jwt) {
+	$tokenParts = explode('.', $jwt);
+	return json_decode(base64_decode($tokenParts[1]));
+}
+
 function is_jwt_valid($jwt, $secret = 'secret') {
 	// split the jwt
 	$tokenParts = explode('.', $jwt);

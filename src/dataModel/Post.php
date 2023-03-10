@@ -17,6 +17,23 @@ function getPost($idPost) {
 function getAllPosts() {
     try {
         $pdo = getPDOConnection();
+        $st = $pdo->query("Select u.Nom nom, p.date_publication date, p.contenu contenu from r_Post p, r_Utilisateur u Where u.Id_Utilisateur = p.Id_Utilisateur");   
+        $st->execute();
+        $data = $st->fetchAll();
+        foreach ($data[0] as $post) {
+            unset($post['0']);
+        }
+        return $data;
+
+
+    } catch (Exception $e) {;
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getAllPostsModerator() {
+    try {
+        $pdo = getPDOConnection();
         $st = $pdo->query("Select * from r_Post p");   
         $st->execute();
         return $st->fetchAll();
@@ -24,7 +41,9 @@ function getAllPosts() {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
-
+ function getAllPostInfo($idPost) {
+    throw new Exception("Unimplementd method", 1);
+ }
 function getPostFromUser($idUser) {
     try {
         $pdo = getPDOConnection();
