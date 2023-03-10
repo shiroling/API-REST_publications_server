@@ -13,8 +13,6 @@
                 deliver_response(400, "Arguments manquants : nom d'utilisateur, mot de passe", null);
                 break;
             }
-            deliver_response(2123, "uname & pass hashé", $data['username']." -- ".hash("sha256",$data['password']));
-
             if (isValidUser($data['username'], hash("sha256",$data['password']))) {
                 $user = getUserInfo($data['username'], $data['password']);
                 $headers = array('alg'=>'HS256', 'typ'=>'JWT');
