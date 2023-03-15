@@ -38,7 +38,7 @@
                 deliver_response(200, "Affichage des posts (en mode anonyme)", $posts);
                 break;
             default:
-                deliver_response(405, "Methode non supportee en anonyme", NULL);
+                deliver_response(405, "Methode non supportee en mode anonyme", NULL);
                 break;
         }
     }
@@ -55,7 +55,7 @@
                     } else
                     if (isset($_GET['idUser'])) {
                         deliver_response(500, " Unimplemented method", NULL);
-                        //$result = getAllUserInfo();
+                        //$result = getAllUserInfo($_GET['idUser']);
                     } else {
                         deliver_response(422, " Unprocessable Content: mauvais argument", NULL);
                         exit();
@@ -64,7 +64,11 @@
                 deliver_response(200, "Affichage des posts (en mode moderateur)", $result);
                 break;
             case 'DELETE':
-                
+                if (!existePost($postedData['idPost'])) {
+                    deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
+                }
+                supprimerPost($postedData['idPost'], $postedData['contenu']);
+                deliver_response(201, "Post supprimé", null);
                 break;
             default:
                 deliver_response(405, "Methode non supportee en moderator", NULL);
@@ -91,15 +95,37 @@
                 deliver_response(201, "Post cree", null);
                 break;
             case 'PUT':
-                
+                $postedData = json_decode(file_get_contents('php://input'), true);
+                if (!existePost($postedData['idPost'])) {
+                    deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
+                }
+                if (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                    modifierContenuPost($postedData['idPost'], $postedData['contenu']);
+                    deliver_response(201, "Post modifié", null);
+                } else {
+                    deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le modifier", NULL);
+                }
                 break;
             case 'DELETE':
-                
+                $postedData = json_decode(file_get_contents('php://input'), true);
+                if (!existePost($postedData['idPost'])) {
+                    deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
+                }
+                if (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                    supprimerPost($postedData['idPost'], $postedData['contenu']);
+                    deliver_response(201, "Post supprimé", null);
+                } else {
+                    deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le supprimer", NULL);
+                }
                 break;
             default:
                 deliver_response(405, "Methode non supportee", NULL);
                 break;
         }
     }
+
+
+
+
 
 ?>
