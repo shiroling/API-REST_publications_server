@@ -85,8 +85,12 @@
                     deliver_response(200, "Affichage des posts (en mode publisher)", $posts);
                 } else {
                     if (isset($_GET['idUser'])) {
-                        $posts = getPostFromUser($idUtilisateur);
-                        deliver_response(200, "Affichage des posts de l'utilisateur", $posts);
+                        if ($_GET['idUser'] == $idUtilisateur) {
+                            $userInfos = getAllUserInfo($_GET['idUser']);
+                            deliver_response(200, "Affichage des posts de l'utilisateur", $userInfos);
+                        } else {
+                            deliver_response(401, "Unauthorized : Vous ne pouvez les informations d'autres utilisateurs", NULL);
+                        }
                     }
                 }
                 break;

@@ -135,7 +135,7 @@ function modifierContenuPost($idPost, $postedData) {
 }
 
 // Fonction pour supprimer un post
-function supprimerPost($idPost, $postedData) {
+function supprimerPost($idPost) {
     $pdo = getPDOConnection();
     $stmt = $pdo->prepare("DELETE FROM r_Post WHERE Id_Post = :idPost");
     $stmt->bindParam(":idPost", $idPost);

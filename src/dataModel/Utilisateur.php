@@ -6,14 +6,14 @@ function isValidUser($username, $password)
 {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT u.Id_Utilisateur FROM r_Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
+        $st = $pdo->prepare("SELECT u.Id_Utilisateur FROM r_Utilisateur u WHERE u.nom = ? AND u.mot_de_passe = ?");
         $st->execute(array($username, $password));
         if ($st->rowCount() > 2) {
             throw new Exception("Deverait pas y avoir plus d'un user ici", 1);
         }
         return $st->rowCount() > 0;
     } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+        deliver_response(503, "@isValidUser : Erreur avec le serveur de base de donnees", $e);
     }
 }
 
@@ -21,11 +21,11 @@ function getUserInfo($username, $password)
 {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT u.Id_Utilisateur as id, u.Role as role FROM r_Utilisateur u WHERE u.nom = :nom AND u.mot_de_passe = :mdp");
+        $st = $pdo->prepare("SELECT u.Id_Utilisateur as id, u.Role as role FROM r_Utilisateur u WHERE u.nom = ? AND u.mot_de_passe = ?");
         $st->execute(array($username, $password));
         return $st->fetchAll();
     } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+        deliver_response(503, "@userInfo : getUErreur avec le serveur de base de donnees", $e);
     }
 }
 
@@ -110,5 +110,4 @@ function getListeDislikesFromUser($idUser) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
-
 ?>
