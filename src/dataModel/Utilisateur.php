@@ -110,4 +110,40 @@ function getListeDislikesFromUser($idUser) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
+
+function getAllPostInfo($idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom, p.date_publication, p.contenu FROM r_Post p, r_Utilisateur u where u.id_Utilisateur = p.id_Utilisateur and p.id_Post = ?");
+        $st->execute(array($idPost));
+        $listeLikes = getLikesFromPost($idPost);
+        $listeDislikes = getDislikesFromPost($idPost);
+        $result = array("infos"=>$st, "likes"=>$listeLikes, "dislikes"=>$listeDislikes);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getLikesFromPost($idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom FROM r_Utilisateur u, r_Liker l WHERE u.Id_Utilisateur = l.Id_Utilisateur AND l.Id_Post = ?");
+        $st->execute(array($idPost));
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getDislikesFromPost($idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom FROM r_Utilisateur u, r_Disliker d WHERE u.Id_Utilisateur = d.Id_Utilisateur AND d.Id_Post = ?");
+        $st->execute(array($idPost));
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
 ?>
