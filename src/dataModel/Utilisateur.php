@@ -80,8 +80,5 @@ function getAllUserInfo($idUtilisateur) {
 
 }
 
-function getAllUserInfo($idUser) {
-
-}
 
 ?>

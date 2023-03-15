@@ -104,26 +104,6 @@ function dislikerPost($idUtilisateur, $idDuPost) {
     }
 }
 
-function isPubliserOf($idUtilisateur, $idPost) {
-    // TODO
-}
-
-function modifierContenuPost($idPost, $postedData) {
-    // TODO
-}
-
-function supprimerPost($idPost, $postedData) {
-    // TODO
-}
-
-function existePost($idPost) {
-
-}
-
-function getAllPostInfo() {
-
-}
-
 // Fonction pour récupérer les données JSON de la table r_Post
 function getAllPostInfo($idPost) {
     $pdo = getPDOConnection();
@@ -155,7 +135,7 @@ function modifierContenuPost($idPost, $postedData) {
 }
 
 // Fonction pour supprimer un post
-function supprimerPost($idPost, $postedData) {
+function supprimerPost($idPost) {
     $pdo = getPDOConnection();
     $stmt = $pdo->prepare("DELETE FROM r_Post WHERE Id_Post = :idPost");
     $stmt->bindParam(":idPost", $idPost);
