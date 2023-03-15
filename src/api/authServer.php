@@ -13,8 +13,10 @@
                 deliver_response(400, "Arguments manquants : nom d'utilisateur, mot de passe", null);
                 break;
             }
+            deliver_response(222, "jj", $data['username']);
+            deliver_response(222, "jj", hash("sha256",$data['password']));
             if (isValidUser($data['username'], hash("sha256",$data['password']))) {
-                $user = getUserInfo($data['username'], $data['password']);
+                $user = getUserInfo($data['username'], hash("sha256",$data['password']));
                 $headers = array('alg'=>'HS256', 'typ'=>'JWT');
                 $payload = array('id'=>$user[0]['id'], 'role'=>$user[0]['role'], 'exp'=>(time() + 31536000));
                 $jwt = generate_jwt($headers, $payload);
