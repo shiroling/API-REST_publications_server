@@ -3,6 +3,7 @@
     require_once('../../dependencies/jwt_utils.php');
     require_once('../../dependencies/rest_utils.php');
     require_once('../dataModel/Post.php');
+    require_once('../dataModel/Utilisateur.php');
 
     header("Content-Type:application/json");
 
@@ -46,7 +47,7 @@
     function procedureClientModerator($http_method, $idUtilisateur) {
         switch($http_method){
             case 'GET':
-                if (!isset($_GET)) {
+                if (empty($_GET)) {
                     $result = getAllPostsModerator();
                 } else {
                     if (isset($_GET['idPost'])) {
@@ -61,7 +62,6 @@
                         exit();
                     }
                 }
-                deliver_response(200, "Affichage des posts (en mode moderateur)", $result);
                 break;
             case 'DELETE':
                 $postedData = file_get_contents('php://input');

@@ -1,5 +1,5 @@
 <?php
-require("conx.php");
+require_once("conx.php");
 
 function getPost($idPost) {
     try {
@@ -29,7 +29,7 @@ function getAllPosts() {
 function getAllPostsModerator() {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->query('SELECT r_Post.Id_Post, r_Utilisateur.Nom nom, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
+        $st = $pdo->prepare('SELECT r_Post.Id_Post, r_Utilisateur.Nom nom, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
                             FROM r_Post NATURAL JOIN r_Utilisateur
                             LEFT JOIN r_Liker ON r_Post.Id_Post = r_Liker.Id_Post
                             LEFT JOIN r_Disliker ON r_Post.Id_Post = r_Disliker.Id_Post
