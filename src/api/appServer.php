@@ -54,8 +54,8 @@
                         //$result = getAllPostInfo($_GET['idPost']);
                     } else
                     if (isset($_GET['idUser'])) {
-                        deliver_response(500, " Unimplemented method", NULL);
-                        //$result = getAllUserInfo($_GET['idUser']);
+                        $result = getAllUserInfo($_GET['idUser']);
+                        deliver_response(200, "Affichage des infos de l'utilisateur", $result);
                     } else {
                         deliver_response(422, " Unprocessable Content: mauvais argument", NULL);
                         exit();
@@ -64,6 +64,7 @@
                 deliver_response(200, "Affichage des posts (en mode moderateur)", $result);
                 break;
             case 'DELETE':
+                $postedData = file_get_contents('php://input');
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
                 }
