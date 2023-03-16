@@ -108,12 +108,12 @@
                 } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
                     $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     if ($nbLignesModifs == 0) {
-                        deliver_response(422, "Erreur dans la suppression du post", null);
+                        deliver_response(422, "Erreur dans la suppression du post", null); //code d'erreur à vérifier
                     } else {
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
                 } else {
-                    deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le modifier", NULL);
+                    likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
                 }
                 break;
             case 'DELETE':
@@ -132,5 +132,20 @@
                 break;
         }
     }
-    
+
+    function likeOrDislikePost($idUtilisateur, $idPost, $action) {
+        switch($action) {
+            case 'like':
+                likerPost($idUtilisateur, $idPost);
+                deliver_response(200, "Post liké", null);
+                break;
+            case 'dislike':
+                dislikerPost($idUtilisateur, $idPost);
+                deliver_response(200, "Post disliké", null);
+                break;
+            default:
+                deliver_response(400, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
+        }
+    }
+
 ?>
