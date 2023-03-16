@@ -49,10 +49,11 @@
             case 'GET':
                 if (empty($_GET)) {
                     $result = getAllPostsModerator();
+                    deliver_response(200, "Affichage des posts (mode moderateur)", $result);
                 } else {
                     if (isset($_GET['idPost'])) {
-                        deliver_response(500, " Unimplemented method", NULL);
-                        //$result = getAllPostInfo($_GET['idPost']);
+                        $result = getAllPostInfo($_GET['idPost']);
+                        deliver_response(200, "Affichage des infos du post", $result);
                     } else
                     if (isset($_GET['idUser'])) {
                         $result = getAllUserInfo($_GET['idUser']);
@@ -64,12 +65,13 @@
                 }
                 break;
             case 'DELETE':
-                $postedData = file_get_contents('php://input');
+                $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
+                } else {
+                    supprimerPost($postedData['idPost']);
+                    deliver_response(201, "Post supprimé", null);
                 }
-                supprimerPost($postedData['idPost'], $postedData['contenu']);
-                deliver_response(201, "Post supprimé", null);
                 break;
             default:
                 deliver_response(405, "Methode non supportee en moderator", NULL);
@@ -117,7 +119,7 @@
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
                 }
                 if (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
-                    supprimerPost($postedData['idPost'], $postedData['contenu']);
+                    supprimerPost($postedData['idPost']);
                     deliver_response(201, "Post supprimé", null);
                 } else {
                     deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le supprimer", NULL);

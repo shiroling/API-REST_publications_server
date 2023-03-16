@@ -106,11 +106,40 @@ function dislikerPost($idUtilisateur, $idDuPost) {
 
 // Fonction pour récupérer les données JSON de la table r_Post
 function getAllPostInfo($idPost) {
-    $pdo = getPDOConnection();
-    $stmt = $pdo->prepare("SELECT * FROM r_Post");
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return json_encode($result);
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom, p.date_publication, p.contenu FROM r_Post p, r_Utilisateur u where u.id_Utilisateur = p.id_Utilisateur and p.id_Post = ?");
+        $st->execute(array($idPost));
+        $infos = $st->fetchAll(PDO::FETCH_ASSOC);
+        $listeLikes = getLikesFromPost($idPost);
+        $listeDislikes = getDislikesFromPost($idPost);
+        $result = array("infos"=>$infos, "likes"=>$listeLikes, "dislikes"=>$listeDislikes);
+        return $result;
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getLikesFromPost($idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom FROM r_Utilisateur u, r_Liker l WHERE u.Id_Utilisateur = l.Id_Utilisateur AND l.Id_Post = ?");
+        $st->execute(array($idPost));
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function getDislikesFromPost($idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT u.nom FROM r_Utilisateur u, r_Disliker d WHERE u.Id_Utilisateur = d.Id_Utilisateur AND d.Id_Post = ?");
+        $st->execute(array($idPost));
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
 }
 
 // Fonction pour vérifier si un utilisateur est le publieur d'un post
