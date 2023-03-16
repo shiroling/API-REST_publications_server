@@ -40,11 +40,14 @@ function getAllPostsModerator() {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
- function getAllPostPublisher() {
+ function getAllPostsPublisher() {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("Select p, from r_Post p Where p.id_Utilisateur = :idUser");
-        $st->bindParam("idUser", $idUtilisateur);
+        $st = $pdo->prepare('SELECT r_Utilisateur.Nom nom, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
+        FROM r_Post NATURAL JOIN r_Utilisateur
+        LEFT JOIN r_Liker ON r_Post.Id_Post = r_Liker.Id_Post
+        LEFT JOIN r_Disliker ON r_Post.Id_Post = r_Disliker.Id_Post
+        GROUP BY r_Post.Id_Post, r_Post.Contenu');
         $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
@@ -54,9 +57,8 @@ function getAllPostsModerator() {
 function getPostFromUser($idUtilisateur) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("Select * from r_Post p Where p.id_Utilisateur = :idUser");
-        $st->bindParam("idUser", $idUtilisateur);
-        $st->execute();
+        $st = $pdo->prepare("Select * from r_Post p Where p.id_Utilisateur = ?");
+        $st->execute(array($idUtilisateur));
         return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
@@ -66,39 +68,28 @@ function getPostFromUser($idUtilisateur) {
 function creerNouveauPost($idUtilisateur, $contenuMessage) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("INSERT INTO r_Post (Id_Post, Contenu, date_publication, Id_Utilisateur) VALUES (NULL, :content,current_timestamp(), :idUser)");
-        $st->bindParam("idUser", $idUser);
-        $idUser = $idUtilisateur;
-        $st->bindParam("content", $conent);
-        $conent = $contenuMessage;
-        $st->execute();
+        $st = $pdo->prepare("INSERT INTO r_Post (Contenu, date_publication, Id_Utilisateur) VALUES (?, current_timestamp(), ?)");
+        $st->execute(array($contenuMessage, $idUtilisateur));
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
 
-function likerPost($idUtilisateur, $idDuPost) {
+function likerPost($idUtilisateur, $idPost) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("INSERT INTO r_Liker (Id_Utilisateur, Id_Post) VALUES (:idUser, :idPost) ");
-        $st->bindParam("idUser", $idUser);
-        $idUser = $idUtilisateur;
-        $st->bindParam("idPost", $idPost);
-        $idPost = $idDuPost;
-        $st->execute();
+        $st = $pdo->prepare("INSERT INTO r_Liker (Id_Utilisateur, Id_Post) VALUES (?, ?) ");
+        $st->execute(array($idUtilisateur, $idPost));
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
 }
-function dislikerPost($idUtilisateur, $idDuPost) {
+
+function dislikerPost($idUtilisateur, $idPost) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("INSERT INTO r_Disliker (Id_Utilisateur, Id_Post) VALUES (:idUser, :idPost) ");
-        $st->bindParam("idUser", $idUser);
-        $idUser = $idUtilisateur;
-        $st->bindParam("idPost", $idPost);
-        $idPost = $idDuPost;
-        $st->execute();
+        $st = $pdo->prepare("INSERT INTO r_Disliker (Id_Utilisateur, Id_Post) VALUES (?, ?) ");
+        $st->execute(array($idUtilisateur, $idPost));
     } catch (Exception $e) {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
@@ -154,12 +145,10 @@ function isPubliserOf($idUtilisateur, $idPost) {
 }
 
 // Fonction pour modifier le contenu d'un post
-function modifierContenuPost($idPost, $postedData) {
+function modifierContenuPost($idPost, $contenu) {
     $pdo = getPDOConnection();
-    $stmt = $pdo->prepare("UPDATE r_Post SET Contenu = :contenu WHERE Id_Post = :idPost");
-    $stmt->bindParam(":contenu", $postedData['contenu']);
-    $stmt->bindParam(":idPost", $idPost);
-    $stmt->execute();
+    $stmt = $pdo->prepare("UPDATE r_Post SET Contenu = ? WHERE Id_Post = ?");
+    $stmt->execute(array($contenu, $idPost));
     return $stmt->rowCount();
 }
 

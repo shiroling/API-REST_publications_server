@@ -7,17 +7,12 @@
 
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch($http_method) {
-        case 'GET':
-            
-            break;
         case 'POST':
             $data = (array) json_decode(file_get_contents('php://input'), true);
             if (empty($data) || empty($data['username']) || empty($data['password'])){
                 deliver_response(400, "Arguments manquants : nom d'utilisateur, mot de passe", null);
                 break;
             }
-            deliver_response(222, "jj", $data['username']);
-            deliver_response(222, "jj", hash("sha256",$data['password']));
             if (isValidUser($data['username'], hash("sha256",$data['password']))) {
                 $user = getUserInfo($data['username'], hash("sha256",$data['password']));
                 $headers = array('alg'=>'HS256', 'typ'=>'JWT');

@@ -82,8 +82,8 @@
     function procedureClientPublisher($http_method, $idUtilisateur) {
         switch($http_method){
             case 'GET':
-                if (!isset($_GET)){
-                    $posts = getAllPostPublisher();
+                if (empty($_GET)){
+                    $posts = getAllPostsPublisher();
                     deliver_response(200, "Affichage des posts (en mode publisher)", $posts);
                 } else {
                     if (isset($_GET['idUser'])) {
@@ -105,10 +105,13 @@
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
-                }
-                if (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
-                    modifierContenuPost($postedData['idPost'], $postedData['contenu']);
-                    deliver_response(201, "Post modifié", null);
+                } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                    $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
+                    if ($nbLignesModifs == 0) {
+                        deliver_response(422, "Erreur dans la suppression du post", null);
+                    } else {
+                        deliver_response(201, "Post modifié", $nbLignesModifs);
+                    }
                 } else {
                     deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le modifier", NULL);
                 }
@@ -117,8 +120,7 @@
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
-                }
-                if (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
                     supprimerPost($postedData['idPost']);
                     deliver_response(201, "Post supprimé", null);
                 } else {
@@ -130,9 +132,5 @@
                 break;
         }
     }
-
-
-
-
-
+    
 ?>
