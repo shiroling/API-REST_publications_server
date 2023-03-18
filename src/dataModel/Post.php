@@ -99,9 +99,9 @@ function dislikerPost($idUtilisateur, $idPost) {
 function getAllPostInfo($idPost) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT u.nom, p.date_publication, p.contenu FROM r_Post p, r_Utilisateur u where u.id_Utilisateur = p.id_Utilisateur and p.id_Post = ?");
+        $st = $pdo->prepare("SELECT u.id_Utilisateur, u.nom, p.date_publication, p.contenu FROM r_Post p, r_Utilisateur u where u.id_Utilisateur = p.id_Utilisateur and p.id_Post = ?");
         $st->execute(array($idPost));
-        $infos = $st->fetchAll(PDO::FETCH_ASSOC);
+        $infos = $st->fetch(PDO::FETCH_ASSOC);
         $listeLikes = getLikesFromPost($idPost);
         $listeDislikes = getDislikesFromPost($idPost);
         $result = array("infos"=>$infos, "likes"=>$listeLikes, "dislikes"=>$listeDislikes);
@@ -170,6 +170,4 @@ function existePost($idPost) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return !empty($result);
 }
-
-
 ?>

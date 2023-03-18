@@ -68,6 +68,9 @@ function getAllUserInfo($idUtilisateur) {
         $reqNomUser = $pdo->prepare("Select Nom from r_Utilisateur where id_Utilisateur = ?");
         $reqNomUser->execute(array($idUtilisateur));
         $nomUser = $reqNomUser->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($nomUser)) {
+            return false;
+        }
         $listePosts = getListePostsFromUser($idUtilisateur);
         $listeLikes = getListeLikesFromUser($idUtilisateur);
         $listeDislikes = getListeDislikesFromUser($idUtilisateur);

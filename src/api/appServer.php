@@ -13,7 +13,7 @@
         procedureClientAnonyme($http_method);
     } else {
         if (!is_jwt_valid($bearer_token)) {
-            deliver_response(503, "Jeton invalide", NULL);
+            deliver_response(401, "Jeton invalide", NULL);
         } else {
             $payload = getPayload($bearer_token);
             switch ($payload['role']) {
@@ -50,12 +50,20 @@
                     deliver_response(200, "Affichage des posts (mode moderateur)", $result);
                 } else {
                     if (isset($_GET['idPost'])) {
-                        $result = getAllPostInfo($_GET['idPost']);
-                        deliver_response(200, "Affichage des infos du post", $result);
+                        if (existePost($_GET['idPost'])) {
+                            $result = getAllPostInfo($_GET['idPost']);
+                            deliver_response(200, "Affichage des infos du post", $result);
+                        } else {
+                            deliver_response(402, "Aucun post pour cet ID", null);
+                        }
                     } else
                     if (isset($_GET['idUser'])) {
                         $result = getAllUserInfo($_GET['idUser']);
-                        deliver_response(200, "Affichage des infos de l'utilisateur", $result);
+                        if ($result == false) {
+                            deliver_response(402, "Aucun utilisateur pour cet ID", null);
+                        }else {
+                            deliver_response(200, "Affichage des infos de l'utilisateur", $result);
+                        }
                     } else {
                         deliver_response(422, " Unprocessable Content: mauvais argument", NULL);
                         exit();
@@ -92,6 +100,14 @@
                             deliver_response(401, "Unauthorized : Vous ne pouvez les informations d'autres utilisateurs", NULL);
                         }
                     }
+                    if (isset($_GET['idPost'])) {
+                        $postInfo = getAllPostInfo($_GET['idPost']);
+                        if ($postInfo["infos"]["id_Utilisateur"] == $idUtilisateur) {
+                            deliver_response(200, "Affichage des posts de l'utilisateur", $postInfo);
+                        } else {
+                            deliver_response(401, "Unauthorized : Vous ne pouvez avoir les informations d'autres post que les votres", NULL);
+                        }
+                    }
                 }
                 break;
             case 'POST':
@@ -102,11 +118,11 @@
             case 'PUT':
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
-                    deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
+                    deliver_response(422, "Impossible de supprimer le post, il n'existe pas", $postedData);
                 } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
                     $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     if ($nbLignesModifs == 0) {
-                        deliver_response(422, "Erreur dans la suppression du post", null); //code d'erreur à vérifier
+                        deliver_response(422, "Erreur dans la modification du post, vérifiez que le contenu soit bien différent", null); //code d'erreur à vérifier
                     } else {
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
