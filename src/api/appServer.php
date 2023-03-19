@@ -120,14 +120,23 @@
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", $postedData);
                 } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
-                    $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
+                    if (!empty($postedData['contenu'])) {
+                        $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
+                    } else {
+                        deliver_response(400, "Veuillez renseigner un contenu", null); //code a verifier
+                        break;
+                    }
                     if ($nbLignesModifs == 0) {
                         deliver_response(422, "Erreur dans la modification du post, vérifiez que le contenu soit bien différent", null); //code d'erreur à vérifier
                     } else {
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
                 } else {
-                    likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
+                    if (!empty(['action'])) {
+                        likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
+                    } else {
+                        deliver_response(400, "Veuillez renseigner une action", null); //code a verifier
+                    }
                 }
                 break;
             case 'DELETE':
@@ -148,17 +157,21 @@
     }
 
     function likeOrDislikePost($idUtilisateur, $idPost, $action) {
-        switch($action) {
-            case 'like':
-                likerPost($idUtilisateur, $idPost);
-                deliver_response(200, "Post liké", null);
-                break;
-            case 'dislike':
-                dislikerPost($idUtilisateur, $idPost);
-                deliver_response(200, "Post disliké", null);
-                break;
-            default:
-                deliver_response(400, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
+        if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)) {
+            deliver_response(400, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
+        } else {
+            switch($action) {
+                case 'like':
+                    likerPost($idUtilisateur, $idPost);
+                    deliver_response(200, "Post liké", null);
+                    break;
+                case 'dislike':
+                    dislikerPost($idUtilisateur, $idPost);
+                    deliver_response(200, "Post disliké", null);
+                    break;
+                default:
+                    deliver_response(400, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
+            }
         }
     }
 

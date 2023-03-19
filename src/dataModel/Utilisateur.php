@@ -114,4 +114,26 @@ function getListeDislikesFromUser($idUser) {
     }
 }
 
+function aDejaLike($idUser, $idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $reqListeLikes = $pdo->prepare("SELECT * FROM r_Liker WHERE id_Utilisateur = ? AND id_Post = ?");
+        $reqListeLikes->execute(array($idUser, $idPost));
+        return !empty($reqListeLikes->fetchAll(PDO::FETCH_ASSOC));
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
+function aDejaDislike($idUser, $idPost) {
+    try {
+        $pdo = getPDOConnection();
+        $reqListeDislikes = $pdo->prepare("SELECT * FROM r_disliker WHERE id_Utilisateur = ? AND id_Post = ?");
+        $reqListeDislikes->execute(array($idUser, $idPost));
+        return !empty($reqListeDislikes->fetchAll(PDO::FETCH_ASSOC));
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+}
+
 ?>
