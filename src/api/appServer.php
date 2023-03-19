@@ -132,7 +132,7 @@
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
                 } else {
-                    if (!empty(['action'])) {
+                    if (!empty($postedData['action'])) {
                         likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
                     } else {
                         deliver_response(400, "Veuillez renseigner une action", null); //code a verifier
