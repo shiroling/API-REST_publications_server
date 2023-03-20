@@ -29,39 +29,6 @@ function getUserInfo($username, $password)
     }
 }
 
-function getDislikedPost($idUtilisateur) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT p from r_Post p, r_Liker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
-        $st->execute(array($idUtilisateur));
-        return $st->fetchAll();
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
-function getLikedPost($idUtilisateur) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT p from r_Post p, r_Disliker l WHERE p.Id_Post = l.Id_Post AND l.Id_Utilisateur = :idUser");
-        $st->execute(array($idUtilisateur));
-        return $st->fetchAll();
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
-function getUtilisateur($idUtilisateur) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare("Select * from r_Utilisateur where id_Utilisateur = ?");
-        $st->execute(array($idUtilisateur));
-        return $st;
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
 function getAllUserInfo($idUtilisateur) {
     try {
         $pdo = getPDOConnection();

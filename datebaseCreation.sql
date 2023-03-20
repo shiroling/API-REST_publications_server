@@ -16,13 +16,6 @@ CREATE TABLE r_Post(
    FOREIGN KEY(Id_Utilisateur) REFERENCES r_Utilisateur(Id_Utilisateur)
 );
 
-CREATE TABLE r_Hashtags(
-   Id_Hashtags INT AUTO_INCREMENT,
-   libelle VARCHAR(16) NOT NULL,
-   PRIMARY KEY(Id_Hashtags),
-   UNIQUE(libelle)
-);
-
 CREATE TABLE r_Liker(
    Id_Utilisateur INT,
    Id_Post INT,
@@ -37,12 +30,4 @@ CREATE TABLE r_Disliker(
    PRIMARY KEY(Id_Utilisateur, Id_Post),
    FOREIGN KEY(Id_Utilisateur) REFERENCES r_Utilisateur(Id_Utilisateur),
    FOREIGN KEY(Id_Post) REFERENCES r_Post(Id_Post)
-);
-
-CREATE TABLE r_Contient(
-   Id_Post INT,
-   Id_Hashtags INT,
-   PRIMARY KEY(Id_Post, Id_Hashtags),
-   FOREIGN KEY(Id_Post) REFERENCES r_Post(Id_Post),
-   FOREIGN KEY(Id_Hashtags) REFERENCES r_Hashtags(Id_Hashtags)
 );
