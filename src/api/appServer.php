@@ -120,6 +120,10 @@
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", $postedData);
                 } elseif (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
+                    if (!empty($postedData['action'])) {
+                        deliver_response(400, "Vous ne pouvez pas liker ou disliker vos propres posts", null);
+                        die();
+                    }
                     if (!empty($postedData['contenu'])) {
                         $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     } else {
@@ -132,6 +136,10 @@
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
                 } else {
+                    if (!empty($postedData['contenu'])) {
+                        deliver_response(400, "Vous ne pouvez pas modifier les posts des autres utilisateurs", null);
+                        die();
+                    }
                     if (!empty($postedData['action'])) {
                         likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
                     } else {
