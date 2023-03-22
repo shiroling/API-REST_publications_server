@@ -49,14 +49,6 @@
                     $result = getAllPostsModerator();
                     deliver_response(200, "Affichage des posts (mode moderateur)", $result);
                 } else {
-                    if (isset($_GET['idPost'])) {
-                        if (existePost($_GET['idPost'])) {
-                            $result = getAllPostInfo($_GET['idPost']);
-                            deliver_response(200, "Affichage des infos du post", $result);
-                        } else {
-                            deliver_response(402, "Aucun post pour cet ID", null);
-                        }
-                    } else
                     if (isset($_GET['idUser'])) {
                         $result = getAllUserInfo($_GET['idUser']);
                         if ($result == false) {

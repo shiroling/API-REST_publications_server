@@ -26,21 +26,7 @@ function getAllPosts() {
     }
 }
 
-function getAllPostsModerator() {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare('SELECT r_Post.Id_Post id, r_Utilisateur.Nom publisher, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
-                            FROM r_Post NATURAL JOIN r_Utilisateur
-                            LEFT JOIN r_Liker ON r_Post.Id_Post = r_Liker.Id_Post
-                            LEFT JOIN r_Disliker ON r_Post.Id_Post = r_Disliker.Id_Post
-                            GROUP BY r_Post.Id_Post, r_Post.Contenu;');   
-        $st->execute();
-        return $st->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
- function getAllPostsPublisher() {
+function getAllPostsPublisher() {
     try {
         $pdo = getPDOConnection();
         $st = $pdo->prepare('SELECT r_Post.Id_Post id, r_Utilisateur.Nom publisher, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
@@ -95,11 +81,33 @@ function dislikerPost($idUtilisateur, $idPost) {
     }
 }
 
+function getAllPostsModerator()
+{
+    try {
+        $pdo = getPDOConnection();
+        $st = $pdo->prepare("SELECT p.id_Post FROM r_Post p");
+        $st->execute();
+        $postIds = $st->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
+    }
+    $result = array();
+    foreach ($postIds as $post) {
+        array_push($result, getAllPostInfo($post['id_Post']));
+    } 
+    return $result;
+}
+
 // Fonction pour récupérer les données JSON de la table r_Post
 function getAllPostInfo($idPost) {
     try {
         $pdo = getPDOConnection();
-        $st = $pdo->prepare("SELECT u.id_Utilisateur, u.nom, p.date_publication, p.contenu FROM r_Post p, r_Utilisateur u where u.id_Utilisateur = p.id_Utilisateur and p.id_Post = ?");
+        $st = $pdo->prepare("SELECT r_Post.Id_Post id, r_Utilisateur.Nom publisher, r_Post.Contenu contenu, count(DISTINCT r_Liker.Id_Utilisateur) nb_likes, COUNT(DISTINCT r_Disliker.Id_Utilisateur) AS nb_dislikes, r_Post.date_publication date
+                            FROM r_Post NATURAL JOIN r_Utilisateur
+                            LEFT JOIN r_Liker ON r_Post.Id_Post = r_Liker.Id_Post
+                            LEFT JOIN r_Disliker ON r_Post.Id_Post = r_Disliker.Id_Post
+                            WHERE r_Post.id_Post = ?
+                            GROUP BY r_Post.Id_Post, r_Post.Contenu;");
         $st->execute(array($idPost));
         $infos = $st->fetch(PDO::FETCH_ASSOC);
         $listeLikes = getLikesFromPost($idPost);
