@@ -22,15 +22,15 @@
 - [x] [x] Consulter les articles publiés par les autres utilisateurs. Un utilisateur publisher doit
 accéder aux informations suivantes relatives à un article : auteur, date de publication,
 contenu, nombre total de like, nombre total de dislike.
-- [x] [] Consulter ses propres articles.
+- [x] [x] Consulter ses propres articles.
 
 #### POST
 - [x] [x] Poster un nouvel article.
 
 #### PUT
 - [x] [x] Modifier les articles dont il est l’auteur.
-- [x] [] Liker les articles publiés par les autres utilisateurs.
-- [x] [] Disliker les articles publiés par les autres utilisateurs.
+- [x] [x] Liker les articles publiés par les autres utilisateurs.
+- [x] [x] Disliker les articles publiés par les autres utilisateurs.
 
 #### DELETE
 - [x] [x] Supprimer les articles dont il est l’auteur.
