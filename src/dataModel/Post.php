@@ -134,7 +134,7 @@ function getDislikesFromPost($idPost) {
 }
 
 // Fonction pour vérifier si un utilisateur est le publieur d'un post
-function isPubliserOf($idUtilisateur, $idPost) {
+function isPublisherOf($idUtilisateur, $idPost) {
     $pdo = getPDOConnection();
     $stmt = $pdo->prepare("SELECT * FROM r_Post WHERE Id_Utilisateur = :idUtilisateur AND Id_Post = :idPost");
     $stmt->bindParam(":idUtilisateur", $idUtilisateur);

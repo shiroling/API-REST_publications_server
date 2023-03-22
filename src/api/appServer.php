@@ -119,7 +119,7 @@
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", $postedData);
-                } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                } elseif (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
                     if (!empty($postedData['contenu'])) {
                         $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     } else {
@@ -143,7 +143,7 @@
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", NULL);
-                } elseif (isPubliserOf($idUtilisateur, $postedData['idPost'])) {
+                } elseif (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
                     supprimerPost($postedData['idPost']);
                     deliver_response(201, "Post supprimé", null);
                 } else {
