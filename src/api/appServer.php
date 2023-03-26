@@ -24,7 +24,7 @@
                 procedureClientModerator($http_method, $payload['id']);
                 break;
             default:
-                deliver_response(401, "Non autorisé : Role d'utilisateur invalide", NULL);
+                deliver_response(401, "Unauthorized : Role d'utilisateur invalide", NULL);
                 break;
             }
         }
@@ -52,7 +52,7 @@
                     if (isset($_GET['idUser'])) {
                         $result = getAllUserInfo($_GET['idUser']);
                         if ($result == false) {
-                            deliver_response(422, "Aucun utilisateur pour cet ID", null);
+                            deliver_response(204, "Aucun utilisateur pour cet ID", null);
                         }else {
                             deliver_response(200, "Affichage des infos de l'utilisateur", $result);
                         }
@@ -89,7 +89,7 @@
                             $userInfos = getAllUserInfo($_GET['idUser']);
                             deliver_response(200, "Affichage des posts de l'utilisateur", $userInfos);
                         } else {
-                            deliver_response(401, "Non autorisé : Vous ne pouvez les informations d'autres utilisateurs", NULL);
+                            deliver_response(403, "Forbidden : Vous ne pouvez accéder aux informations d'autres utilisateurs", NULL);
                         }
                     }
                     if (isset($_GET['idPost'])) {
@@ -97,7 +97,7 @@
                         if (isPublisherOf($idUtilisateur, $postInfo["infos"]["id"])) {
                             deliver_response(200, "Affichage des posts de l'utilisateur", $postInfo);
                         } else {
-                            deliver_response(401, "Non autorisé : Vous ne pouvez avoir les informations d'autres post que les votres", NULL);
+                            deliver_response(403, "Forbidden : Vous ne pouvez accéder aux informations d'autres post que les votres", NULL);
                         }
                     }
                 }
@@ -121,11 +121,11 @@
                     if (!empty($postedData['contenu'])) {
                         $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     } else {
-                        deliver_response(400, "Veuillez renseigner un contenu", null);
+                        deliver_response(400, "Veuillez renseigner un contenu", null); //code a verifier
                         break;
                     }
                     if ($nbLignesModifs == 0) {
-                        deliver_response(422, "Erreur dans la modification du post, vérifiez que le contenu soit bien différent", null);
+                        deliver_response(422, "Erreur dans la modification du post, vérifiez que le contenu soit bien différent", null); //code d'erreur à vérifier
                     } else {
                         deliver_response(201, "Post modifié", $nbLignesModifs);
                     }
@@ -137,7 +137,7 @@
                     if (!empty($postedData['action'])) {
                         likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
                     } else {
-                        deliver_response(400, "Veuillez renseigner une action", null);
+                        deliver_response(400, "Veuillez renseigner une action", null); //code a verifier
                     }
                 }
                 break;
@@ -149,7 +149,7 @@
                     supprimerPost($postedData['idPost']);
                     deliver_response(201, "Post supprimé", null);
                 } else {
-                    deliver_response(401, "Non autorisé : Vous devez être l'auteur du post pour pouvoir le supprimer", NULL);
+                    deliver_response(401, "Unauthorized : Vous devez être l'auteur du post pour pouvoir le supprimer", NULL);
                 }
                 break;
             default:
@@ -160,7 +160,7 @@
 
     function likeOrDislikePost($idUtilisateur, $idPost, $action) {
         if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)) {
-            deliver_response(422, "Vous avez deja like ou dislike ce post", null);
+            deliver_response(400, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
         } else {
             switch($action) {
                 case 'like':
@@ -172,7 +172,7 @@
                     deliver_response(200, "Post disliké", null);
                     break;
                 default:
-                    deliver_response(400, "Veuillez soit liker le post soit le disliker", null);
+                    deliver_response(400, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
             }
         }
     }

@@ -95,7 +95,7 @@ function aDejaLike($idUser, $idPost) {
 function aDejaDislike($idUser, $idPost) {
     try {
         $pdo = getPDOConnection();
-        $reqListeDislikes = $pdo->prepare("SELECT * FROM r_disliker WHERE id_Utilisateur = ? AND id_Post = ?");
+        $reqListeDislikes = $pdo->prepare("SELECT * FROM r_Disliker WHERE id_Utilisateur = ? AND id_Post = ?");
         $reqListeDislikes->execute(array($idUser, $idPost));
         return !empty($reqListeDislikes->fetchAll(PDO::FETCH_ASSOC));
     } catch (Exception $e) {

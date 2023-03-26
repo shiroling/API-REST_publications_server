@@ -1,0 +1,543 @@
+{
+	"info": {
+		"_postman_id": "42793b92-b940-4a47-8414-bc268a5bd86a",
+		"name": "api publications",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25740657"
+	},
+	"item": [
+		{
+			"name": "Anonymous",
+			"item": [
+				{
+					"name": "get as anonymous",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "publisher",
+			"item": [
+				{
+					"name": "get as publisher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info sur publication",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/appServer.php?idPost=1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							],
+							"query": [
+								{
+									"key": "idPost",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info sur utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/appServer.php?idUser=2",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							],
+							"query": [
+								{
+									"key": "idUser",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "creer publication",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contenu\": \"test pour like\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modifier publication",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idPost\": 1,\n    \"contenu\": \"Tout premier test ! modifié encore\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Liker un post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idPost\": \"12\",\n    \"action\": \"like\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "disliker un post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idPost\": \"1\",\n    \"action\": \"dislike\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenQ}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idPost\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "moderator",
+			"item": [
+				{
+					"name": "get as moderator",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{moderatorToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info sur utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{moderatorToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/api/src/api/appServer.php?idUser=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"src",
+								"api",
+								"appServer.php"
+							],
+							"query": [
+								{
+									"key": "idUser",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idPost\": 9\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentification",
+			"item": [
+				{
+					"name": "get token Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"admin\", \"password\": \"admin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Quentin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"Q.couturier\", \"password\": \"quentin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Julien",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"J.broisin\", \"password\": \"julien\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Brice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"B.arnault\", \"password\": \"brice\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Noa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"N.despaux\", \"password\": \"noa\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost/api/src/api",
+			"type": "string"
+		},
+		{
+			"key": "publisherTokenQ",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InB1Ymxpc2hlciIsImV4cCI6MTcxMDcxMjA4M30.ma-mtgj7gPsNr26XRg_dZJkrBlvezlK0GkhvgFwU-cw"
+		},
+		{
+			"key": "moderatorToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im1vZGVyYXRvciIsImV4cCI6MTcxMDcxMDg4NH0.XIFZirGn-nKagI0p1yNQWRbTC13tS12onUXMIFESpPI"
+		},
+		{
+			"key": "publisherTokenN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InB1Ymxpc2hlciIsImV4cCI6MTcxMTAxNzgwOX0.gPvnt8CTdV1uANasYGzM87PrCa_kFIYuaqq6rDI_SoI",
+			"type": "string"
+		}
+	]
+}
