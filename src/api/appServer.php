@@ -94,7 +94,7 @@
                     }
                     if (isset($_GET['idPost'])) {
                         $postInfo = getAllPostInfo($_GET['idPost']);
-                        if ($postInfo["infos"]["id_Utilisateur"] == $idUtilisateur) {
+                        if (isPublisherOf($idUtilisateur, $postInfo["infos"]["id"])) {
                             deliver_response(200, "Affichage des posts de l'utilisateur", $postInfo);
                         } else {
                             deliver_response(401, "Unauthorized : Vous ne pouvez avoir les informations d'autres post que les votres", NULL);
@@ -111,7 +111,9 @@
                 $postedData = json_decode(file_get_contents('php://input'), true);
                 if (!existePost($postedData['idPost'])) {
                     deliver_response(422, "Impossible de supprimer le post, il n'existe pas", $postedData);
-                } elseif (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
+                    die();
+                }
+                if (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
                     if (!empty($postedData['action'])) {
                         deliver_response(400, "Vous ne pouvez pas liker ou disliker vos propres posts", null);
                         die();
