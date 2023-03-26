@@ -1,19 +1,6 @@
 <?php
 require_once("conx.php");
 
-function getPost($idPost) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare("Select * from r_Post where id_Post = ?");
-        $st->bindParam(1, $id);
-        $id = $idPost;
-        $st->execute();
-        return $st->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
-
 function getAllPosts() {
     try {
         $pdo = getPDOConnection();
@@ -40,16 +27,6 @@ function getAllPostsPublisher() {
         deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
     }
  }
-function getPostFromUser($idUtilisateur) {
-    try {
-        $pdo = getPDOConnection();
-        $st = $pdo->prepare("Select * from r_Post p Where p.id_Utilisateur = ?");
-        $st->execute(array($idUtilisateur));
-        return $st->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        deliver_response(503, "Erreur avec le serveur de base de donnees", $e);
-    }
-}
 
 function creerNouveauPost($idUtilisateur, $contenuMessage) {
     try {
