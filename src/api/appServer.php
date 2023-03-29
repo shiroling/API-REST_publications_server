@@ -162,21 +162,25 @@
     }
 
     function likeOrDislikePost($idUtilisateur, $idPost, $action) {
-        if (!aDejaLike($idUtilisateur, $idPost) && !aDejaDislike($idUtilisateur, $idPost)) {
-            switch($action) {
-                case 'like':
+        switch($action) {
+            case 'like':
+                if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)){
+                    deliver_response(403, "Vous avez deja like ou dislike ce post", null);
+                } else {
                     likerPost($idUtilisateur, $idPost);
                     deliver_response(200, "Post liké", null);
-                    break;
-                case 'dislike':
+                }
+                break;
+            case 'dislike':
+                if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)){
+                    deliver_response(403, "Vous avez deja like ou dislike ce post", null);
+                } else {
                     dislikerPost($idUtilisateur, $idPost);
                     deliver_response(200, "Post disliké", null);
-                    break;
-                default:
-                    deliver_response(422, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
-            }
-        } else {
-            deliver_response(403, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
+                }
+                break;
+            default:
+                deliver_response(422, "Veuillez soit liker le post soit le disliker", null);
         }
     }
 
