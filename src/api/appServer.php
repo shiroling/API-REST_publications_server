@@ -91,6 +91,7 @@
                         } else {
                             deliver_response(403, "Forbidden : Vous ne pouvez accéder aux informations d'autres utilisateurs", NULL);
                         }
+                        die();
                     }
                     if (isset($_GET['idPost'])) {
                         $postInfo = getAllPostInfo($_GET['idPost']);
@@ -99,7 +100,9 @@
                         } else {
                             deliver_response(403, "Forbidden : Vous ne pouvez accéder aux informations d'autres post que les votres", NULL);
                         }
+                        die();
                     }
+                    deliver_response(422, "Argument invalide", null);
                 }
                 break;
             case 'POST':
@@ -115,13 +118,13 @@
                 }
                 if (isPublisherOf($idUtilisateur, $postedData['idPost'])) {
                     if (!empty($postedData['action'])) {
-                        deliver_response(400, "Vous ne pouvez pas liker ou disliker vos propres posts", null);
+                        deliver_response(403, "Vous ne pouvez pas liker ou disliker vos propres posts", null);
                         die();
                     }
                     if (!empty($postedData['contenu'])) {
                         $nbLignesModifs = modifierContenuPost($postedData['idPost'], $postedData['contenu']);
                     } else {
-                        deliver_response(400, "Veuillez renseigner un contenu", null); //code a verifier
+                        deliver_response(422, "Veuillez renseigner un contenu", null); //code a verifier
                         break;
                     }
                     if ($nbLignesModifs == 0) {
@@ -131,13 +134,13 @@
                     }
                 } else {
                     if (!empty($postedData['contenu'])) {
-                        deliver_response(400, "Vous ne pouvez pas modifier les posts des autres utilisateurs", null);
+                        deliver_response(403, "Vous ne pouvez pas modifier les posts des autres utilisateurs", null);
                         die();
                     }
                     if (!empty($postedData['action'])) {
                         likeOrDislikePost($idUtilisateur, $postedData['idPost'], $postedData['action']);
                     } else {
-                        deliver_response(400, "Veuillez renseigner une action", null); //code a verifier
+                        deliver_response(422, "Veuillez renseigner une action", null); //code a verifier
                     }
                 }
                 break;
@@ -160,7 +163,7 @@
 
     function likeOrDislikePost($idUtilisateur, $idPost, $action) {
         if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)) {
-            deliver_response(400, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
+            deliver_response(403, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
         } else {
             switch($action) {
                 case 'like':
@@ -172,7 +175,7 @@
                     deliver_response(200, "Post disliké", null);
                     break;
                 default:
-                    deliver_response(400, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
+                    deliver_response(422, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
             }
         }
     }
