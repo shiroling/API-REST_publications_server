@@ -162,9 +162,7 @@
     }
 
     function likeOrDislikePost($idUtilisateur, $idPost, $action) {
-        if (aDejaLike($idUtilisateur, $idPost) || aDejaDislike($idUtilisateur, $idPost)) {
-            deliver_response(403, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
-        } else {
+        if (!aDejaLike($idUtilisateur, $idPost) && !aDejaDislike($idUtilisateur, $idPost)) {
             switch($action) {
                 case 'like':
                     likerPost($idUtilisateur, $idPost);
@@ -177,6 +175,8 @@
                 default:
                     deliver_response(422, "Veuillez soit liker le post soit le disliker", null); //code d'erreur a verifier
             }
+        } else {
+            deliver_response(403, "Vous avez deja like ou dislike ce post", null);  //code d'erreur a verifier
         }
     }
 
