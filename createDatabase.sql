@@ -7,6 +7,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+CREATE DATABASE IF NOT EXISTS `rest_bdd_despaux_couturier` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `rest_bdd_despaux_couturier`;
 
 CREATE TABLE `r_Disliker` (
   `Id_Utilisateur` int(11) NOT NULL,
@@ -39,14 +41,13 @@ CREATE TABLE `r_Post` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `r_Post` (`Id_Post`, `Contenu`, `date_publication`, `Id_Utilisateur`) VALUES
-(13, 'Idée (de benoit) : application de location de chiense', '2023-03-23 07:45:06', 2),
+(13, 'Idée (de benoit) : application de location de chiens', '2023-03-23 07:45:06', 2),
 (14, 'Idée (de benoit) : Entreprise de collecte de cartons mouillés', '2023-03-23 07:45:33', 2),
-(15, 'Idée (de Noa) : Une site qui permet d\'aiguiser des couteaux à distence (stance)', '2023-03-23 07:48:18', 2),
+(15, 'Idée (de Noa) : Une site qui permet d\'aiguiser des couteaux à distance (stance)', '2023-03-23 07:48:18', 2),
 (16, 'Idée (de Noa) : Une association qui permet de voler des chariots', '2023-03-23 07:48:49', 2),
-(17, 'Idée (de Luca) : Application qui permet de savoir où sont les rampes de skate les plus grissantes.', '2023-03-23 07:50:21', 3),
-(18, 'Idée (de Benois) : Logiciel pour passer ses heures de conduite en ligne', '2023-03-23 07:51:38', 3),
+(17, 'Idée (de Lucas) : Application qui permet de savoir où sont les rampes de skate les plus glissantes.', '2023-03-23 07:50:21', 3),
+(18, 'Idée (de Benoit) : Logiciel pour passer ses heures de conduite en ligne', '2023-03-23 07:51:38', 3),
 (19, 'Idée (de Noa) : Une école qui apprend à repasser des chaussettes un peu humides.', '2023-03-23 07:55:05', 3),
-(20, 'Idée (de Noa) : Une école qui apprend à repasser des chaussettes un peu humides.', '2023-03-29 09:51:56', 3);
 
 CREATE TABLE `r_Utilisateur` (
   `Id_Utilisateur` int(11) NOT NULL,
