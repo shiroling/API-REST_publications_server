@@ -1,6 +1,6 @@
 <?php
     require_once("conx.php");
-    require_once('../../dependencies/rest_utils.php');
+    require_once('../dependencies/rest_utils.php');
 
 function isValidUser($username, $password)
 {

@@ -1,8 +1,8 @@
 <?php
     header("Content-Type:application/json");
-    require_once('../../dependencies/jwt_utils.php');
+    require_once('../dependencies/jwt_utils.php');
     require_once('../dataModel/Utilisateur.php');
-    require_once('../../dependencies/rest_utils.php');
+    require_once('../dependencies/rest_utils.php');
 
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch($http_method) {

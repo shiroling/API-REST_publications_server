@@ -7,6 +7,143 @@
 	},
 	"item": [
 		{
+			"name": "Authentification",
+			"item": [
+				{
+					"name": "get token Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"admin\", \"password\": \"admin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Quentin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"Q.couturier\", \"password\": \"quentin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Julien",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"J.broisin\", \"password\": \"julien\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Brice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"B.arnault\", \"password\": \"brice\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token Noa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"N.despaux\", \"password\": \"noa\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authServer.php",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authServer.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Anonymous",
 			"item": [
 				{
@@ -62,35 +199,6 @@
 					"response": []
 				},
 				{
-					"name": "Info sur publication",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{publisherTokenQ}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/appServer.php?idPost=1",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"appServer.php"
-							],
-							"query": [
-								{
-									"key": "idPost",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Info sur utilisateur",
 					"request": {
 						"method": "GET",
@@ -120,9 +228,9 @@
 					"response": []
 				},
 				{
-					"name": "creer publication",
+					"name": "Info sur publication",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
@@ -130,9 +238,38 @@
 								"type": "text"
 							}
 						],
+						"url": {
+							"raw": "{{URL}}/appServer.php?idPost=13",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appServer.php"
+							],
+							"query": [
+								{
+									"key": "idPost",
+									"value": "13"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "creer publication",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{publisherTokenN}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contenu\": \"test pour like\"\n}"
+							"raw": "{\n    \"contenu\": \"Idée (de Noa) : Une école qui apprend à repasser des chaussettes un peu humides.\"\n}"
 						},
 						"url": {
 							"raw": "{{URL}}/appServer.php",
@@ -153,13 +290,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{publisherTokenQ}}",
+								"value": "Bearer {{publisherTokenN}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"idPost\": 1,\n    \"contenu\": \"Tout premier test ! modifié encore\"\n}"
+							"raw": "{\n    \"idPost\": 18,\n    \"contenu\": \"Idée (de Benois) : Logiciel pour passer ses heures de conduite en ligne\"\n}"
 						},
 						"url": {
 							"raw": "{{URL}}/appServer.php",
@@ -180,13 +317,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{publisherTokenN}}",
+								"value": "Bearer {{publisherTokenQ}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"idPost\": \"12\",\n    \"action\": \"like\"\n}",
+							"raw": "{\n    \"idPost\": \"13\",\n    \"action\": \"like\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,13 +349,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{publisherTokenN}}",
+								"value": "Bearer {{publisherTokenB}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"idPost\": \"1\",\n    \"action\": \"dislike\"\n}",
+							"raw": "{\n    \"idPost\": \"17\",\n    \"action\": \"dislike\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -337,7 +474,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{publisherToken}}",
+								"value": "Bearer {{moderatorToken}}",
 								"type": "text"
 							}
 						],
@@ -357,141 +494,6 @@
 							],
 							"path": [
 								"appServer.php"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Authentification",
-			"item": [
-				{
-					"name": "get token Admin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\": \"admin\", \"password\": \"admin\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/authServer.php",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"authServer.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get token Quentin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\": \"Q.couturier\", \"password\": \"quentin\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/authServer.php",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"authServer.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get token Julien",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\": \"J.broisin\", \"password\": \"julien\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/authServer.php",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"authServer.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get token Brice",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\": \"B.arnault\", \"password\": \"brice\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/authServer.php",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"authServer.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get token Noa",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\": \"N.despaux\", \"password\": \"noa\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/authServer.php",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"authServer.php"
 							]
 						}
 					},
@@ -523,7 +525,7 @@
 	"variable": [
 		{
 			"key": "URL",
-			"value": "http://localhost/api/src/api",
+			"value": "http://localhost/API-REST_publications_server/api/",
 			"type": "string"
 		},
 		{
@@ -538,6 +540,10 @@
 			"key": "publisherTokenN",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InB1Ymxpc2hlciIsImV4cCI6MTcxMTAxNzgwOX0.gPvnt8CTdV1uANasYGzM87PrCa_kFIYuaqq6rDI_SoI",
 			"type": "string"
+		},
+		{
+			"key": "publisherTokenB",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6InB1Ymxpc2hlciIsImV4cCI6MTcxMTA5NTQ0M30.lErYcVY6LHDIRXCh-AuCIpXZSMKfExEOCiK0N86Xt3g"
 		}
 	]
 }
