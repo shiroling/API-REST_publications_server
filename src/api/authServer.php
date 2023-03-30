@@ -9,15 +9,15 @@
         case 'POST':
             $data = (array) json_decode(file_get_contents('php://input'), true);
             if (empty($data)){
-                deliver_response(400, "Arguments manquants : data = nom d'utilisateur, mot de passe", null);
+                deliver_response(422, "Arguments manquants : data = nom d'utilisateur, mot de passe", null);
                 die;
             }
             if (empty($data['username'])) {
-                deliver_response(400, "Arguments manquants : nom d'utilisateur", null);
+                deliver_response(422, "Arguments manquants : nom d'utilisateur", null);
                 die;
             }
             if (empty($data['password'])) {
-                deliver_response(400, "Arguments manquants : mot de passe", null);
+                deliver_response(422, "Arguments manquants : mot de passe", null);
                 die;
             }
             if (isValidUser($data['username'], hash("sha256",$data['password']))) {
